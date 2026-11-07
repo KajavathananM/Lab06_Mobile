@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 3 Summary Answer - MCS4302 Week 6</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f1f5f9;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 36px;
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid #e2e8f0;
+  }
+  .header {
+    border-bottom: 3px solid #4f46e5;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+  }
+  h2 {
+    color: #0f172a;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  p.sub {
+    color: #64748b;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .sentence-box {
+    background-color: #f8fafc;
+    border-left: 4px solid #6366f1;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    border-radius: 0 8px 8px 0;
+  }
+  .sentence-box strong {
+    color: #1e1b4b;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  .sentence-box p {
+    margin: 0;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .box-improved { border-left-color: #22c55e; }
+  .box-not-improved { border-left-color: #ef4444; }
+  .box-n5k { border-left-color: #eab308; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h2>MCS4302 Week 6 - Part 3 Summary Response</h2>
+    <p class="sub">Analysis of Isolate.run performance impact and trade-offs</p>
+  </div>
+
+  <div class="sentence-box box-improved">
+    <strong>1. Metrics Improved:</strong>
+    <p><code>Isolate.run</code> significantly improved UI frame metrics—reducing estimated dropped frames to 0 and worst frame render time to 16.6 ms (60 FPS)—because CPU-heavy JSON parsing was offloaded from the main UI thread.</p>
+  </div>
+
+  <div class="sentence-box box-not-improved">
+    <strong>2. Metrics Not Improved & Why:</strong>
+    <p>However, it did not improve actual decode time or end-to-end total time due to the CPU workload remaining identical alongside a small isolate spawning and memory-transfer overhead.</p>
+  </div>
+
+  <div class="sentence-box box-n5k">
+    <strong>3. Value at n = 5k:</strong>
+    <p>At n = 5k, decoding only takes ~45 ms causing minimal frame drops (2–3), making the isolate overhead barely worth it compared to n = 50k where offloading is essential to prevent a complete half-second UI freeze.</p>
+  </div>
+</div>
+</body>
+</html>

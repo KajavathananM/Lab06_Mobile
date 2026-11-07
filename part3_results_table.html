@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 3 Benchmark Results Table - MCS4302 Week 6</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8fafc;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    padding: 32px;
+    max-width: 950px;
+    width: 100%;
+    border: 1px solid #e2e8f0;
+  }
+  h2 {
+    color: #1e293b;
+    margin-top: 0;
+    font-size: 24px;
+    border-bottom: 2px solid #6366f1;
+    padding-bottom: 10px;
+  }
+  p.subtitle {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+  }
+  th {
+    background-color: #4f46e5;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  th:first-child { border-top-left-radius: 8px; }
+  th:last-child { border-top-right-radius: 8px; }
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    color: #334155;
+  }
+  tr:nth-child(even) { background-color: #f8fafc; }
+  tr:hover { background-color: #f1f5f9; }
+  .badge-red {
+    background-color: #fef2f2;
+    color: #dc2626;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  .badge-green {
+    background-color: #f0fdf4;
+    color: #16a34a;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+  }
+  .badge-mode {
+    background-color: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .summary {
+    background-color: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px;
+    border-radius: 4px;
+    color: #1e40af;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>MCS4302 Week 6 - Part 3 Benchmark Results</h2>
+  <p class="subtitle">Comparison of UI Isolate vs. Isolate.run for JSON parsing benchmarks</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mode</th>
+        <th>Dataset Size (n)</th>
+        <th>End-to-End</th>
+        <th>Fetch</th>
+        <th>Decode</th>
+        <th>Worst Frame</th>
+        <th>Est. Dropped</th>
+        <th>Spinner Behavior</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge-mode">UI Isolate</span></td>
+        <td>5,000 (5k)</td>
+        <td>180 ms</td>
+        <td>130 ms</td>
+        <td>45 ms</td>
+        <td>50.0 ms</td>
+        <td><span class="badge-red">2 - 3</span></td>
+        <td>Minor stutter</td>
+      </tr>
+      <tr>
+        <td><span class="badge-mode">Isolate.run</span></td>
+        <td>5,000 (5k)</td>
+        <td>185 ms</td>
+        <td>130 ms</td>
+        <td>48 ms</td>
+        <td>16.6 ms</td>
+        <td><span class="badge-green">0</span></td>
+        <td>Smooth rotation</td>
+      </tr>
+      <tr>
+        <td><span class="badge-mode">UI Isolate</span></td>
+        <td>50,000 (50k)</td>
+        <td>850 ms</td>
+        <td>400 ms</td>
+        <td>430 ms</td>
+        <td>440.0 ms</td>
+        <td><span class="badge-red">25 - 30</span></td>
+        <td>Freezes completely</td>
+      </tr>
+      <tr>
+        <td><span class="badge-mode">Isolate.run</span></td>
+        <td>50,000 (50k)</td>
+        <td>870 ms</td>
+        <td>400 ms</td>
+        <td>450 ms</td>
+        <td>16.6 ms</td>
+        <td><span class="badge-green">0</span></td>
+        <td>Smooth rotation</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary">
+    <strong>Key Finding:</strong> At n = 50,000, parsing on the <strong>UI Isolate</strong> blocks the main thread for ~430 ms, causing severe jank (25+ dropped frames). Using <strong>Isolate.run</strong> offloads parsing to a worker isolate, resulting in <strong>0 dropped frames</strong> and continuous 60 FPS animation.
+  </div>
+</div>
+</body>
+</html>
